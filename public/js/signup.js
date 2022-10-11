@@ -7,7 +7,7 @@
     if (name && password) {
       const response = await fetch('/api/users', {
         method: 'POST',
-        body: JSON.stringify({ name, password }),
+        body: JSON.stringify({ usernname, password }),
         headers: { 'Content-Type': 'application/json' },
       });
   

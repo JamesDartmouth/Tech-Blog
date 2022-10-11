@@ -1,73 +1,69 @@
 const router = require('express').Router();
 const { Post, User, Comment } = require('../models');
-const sequelize = require('../config/connection');
-const withAuth = require('../utils/auth');
+// const withAuth = require('../utils/auth');
 
 
 // THEN I am taken to the homepage and presented with 
 // existing blog posts that include the post title and the date created----------------
+// Get all projects and JOIN with user data
 
 router.get('/', async (req, res) => {
   try {
     const postData = await Post.findAll({
-
-    //   attributes: [
-    //     'id',
-    //     'title',
-    //     'content',
-    //     'created_at'
-    // ],
-    // include: [{
-    //         model: Comment,
-    //         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-    //         include: {
-    //             model: User,
-    //             attributes: ['username']
-    //         }
-    //     },
-    //     {
-    //         model: User,
-    //         attributes: ['username']
-    //     }
-    // ]
-
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
+      attributes: [
+        'id',
+        'title',
+        'body',
+        'date_created'
       ],
+      include: [{
+        model: User,
+        attributes: ['username']
+      }
+      ]
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
 
     // Pass serialized data and session flag into template
-    res.render('homepage', { 
-      posts, 
-      logged_in: req.session.logged_in 
+    res.render('homepage', {
+      posts,
+      logged_in: req.session.logged_in
     });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-
+// GET BY ID-----------
+// WHEN I click on an existing blog post
+// THEN I am presented with the post title, contents, post creator’s username, 
+// and date created for that post and have the option to leave a comment
 
 router.get('/post/:id', async (req, res) => {
   try {
     const postData = await Post.findByPk(req.params.id, {
 
-      // Post.findOne({
-      //   where: {
-      //       id: req.params.id
-      //   },
-
+      attributes: [
+        'id',
+        'title',
+        'body',
+        'date_created'
+      ],
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['username']
         },
-      ],
+        {
+          model: Comment,
+          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'date_created'],
+          include: {
+            model: User,
+            attributes: ['username']
+          }
+        }]
+
     });
 
     const post = postData.get({ plain: true });
@@ -82,8 +78,7 @@ router.get('/post/:id', async (req, res) => {
 });
 
 
-// THEN I am taken to the dashboard and presented 
-// with any blog posts I have already created and the option to add a new blog post
+// COMMENT ROUTE??-------------------------------------------------------
 
 
 router.get('/login', (req, res) => {

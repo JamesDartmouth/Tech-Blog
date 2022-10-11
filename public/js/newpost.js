@@ -17,7 +17,7 @@ const newFormHandler = async (event) => {
 //         alert(response.statusText);
 //       }
 //     }
-//   };
+  };
   
   document
     .querySelector('.signup-form')
