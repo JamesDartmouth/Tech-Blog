@@ -1,21 +1,15 @@
+{{#if posts.length}}
 <div>
-      {{#if posts.length}}
-  <div>
-    <h2>Your Posts</h2>
+  <h2>Your Posts</h2>
+  {{#each posts as |post|}}
 
-    {{#each posts as |post|}}
+  {{> dbpost-info post}}
 
-    {{> dashboard-postinfo post}}
-
-    {{!-- <div class="row mb-2">
-      <div class="col-md-8">
-        <h4><a href="/project/{{post.id}}">{{post.title}}</a></h4>
-      </div>
-    </div> --}}
-
-    {{/each}}
-  </div>
-  {{/if}}
+  {{/each}}
 </div>
+{{/if}}
 
- <button type="submit" class="btn"><a href="/dashboard/new">New Post</a></button>
+
+<button type="submit" class="btn"><a href="/dashboard/new">New Post</a></button>
+
+<script src="/public/js/newpost.js"></script>

@@ -1,13 +1,17 @@
-const newFormHandler = async (event) => {
+const updateFormHandler = async (event) => {
     event.preventDefault();
   
     const title = document.querySelector('#post-title').value;
     const body = document.querySelector('#post-content').value;
+
+    // const id = window.location.toString().split('/')[
+    //     window.location.toString().split('/').length - 1
+    //   ];
   
     if (title && body) {
-      const response = await fetch('/api/posts', {
-        method: 'POST',
-        body: JSON.stringify({ title, body }),
+      const response = await fetch(`/api/posts/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ post_id: id, title, body }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -21,4 +25,5 @@ const newFormHandler = async (event) => {
   
   document
     .querySelector('.newpost-form')
-    .addEventListener('submit', newFormHandler);
+    .addEventListener('submit', updateFormHandler);
+

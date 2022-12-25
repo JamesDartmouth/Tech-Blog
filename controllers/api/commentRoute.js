@@ -20,14 +20,12 @@ router.get('/', async (req, res) => {
         },
       ],
     });
-
-    const comments = commentData.map((comment) => comment.get({ plain: true }));
-
-    // res.status(200).json(commentData);----------
-    res.render('homepage', {
-      comments,
-      logged_in: req.session.logged_in
-    });
+    // const comments = commentData.map((comment) => comment.get({ plain: true }));
+    // res.render('homepage', {
+    //   comments,
+    //   logged_in: req.session.logged_in
+    // });
+    res.status(200).json(commentData);
   } catch (err) {
     res.status(500).json(err);
   }
